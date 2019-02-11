@@ -1,6 +1,8 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+let mapleader = "\<Space>"
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -18,12 +20,15 @@ Plugin 'valloric/youcompleteme'
 Plugin 'erichdongubler/vim-sublime-monokai'
 " Vim commentary
 Plugin 'tpope/vim-commentary'
+" Jenkinsfile syntax stuff
+Plugin 'martinda/jenkinsfile-vim-syntax'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
+"
 "
 " Brief help
 " :PluginList       - lists configured plugins
@@ -34,11 +39,15 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
+set showmode
+set autoread
+
 syntax on
 colorscheme sublimemonokai
 
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
+set scrolloff=5
 set number relativenumber
 
 augroup numbertoggle
@@ -62,3 +71,14 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
+function! GetBranchName(_) abort
+  let b:branch_name = systemlist("git rev-parse --abbrev-ref HEAD 2> /dev/null || echo ''")[0]
+endfunction
+call timer_start(1000, function('GetBranchName'), {'repeat': -1})
+autocmd BufEnter,BufWritePost * call GetBranchName("")
+
+set laststatus=2
+set statusline=%f " tail of the filename
+set statusline+=\ c:%c " column number
+set statusline+=%= " switching to right side
+set statusline+=%(%{b:branch_name}%)
