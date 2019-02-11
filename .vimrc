@@ -39,7 +39,16 @@ colorscheme sublimemonokai
 
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
-set number
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+" turn swap files OFF
+set noswapfile
 
 set tabstop=2
 set shiftwidth=2
