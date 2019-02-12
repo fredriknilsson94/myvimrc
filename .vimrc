@@ -49,6 +49,9 @@ colorscheme sublimemonokai
 
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
+" quick access to display registers
+nnoremap <Leader>r :reg<CR>
+
 set scrolloff=5
 set number relativenumber
 
