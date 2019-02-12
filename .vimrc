@@ -11,7 +11,9 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-      
+
+" Vim diff and merge tool improvement
+Plugin 'whiteinge/diffconflicts'
 " NERDtree
 Plugin 'scrooloose/nerdtree'
 " YouCompleteMe auto-completion
