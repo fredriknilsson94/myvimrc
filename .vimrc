@@ -84,3 +84,9 @@ set statusline=%f " tail of the filename
 set statusline+=\ c:%c " column number
 set statusline+=%= " switching to right side
 set statusline+=%(%{b:branch_name}%)
+
+" vim diff colors
+hi DiffAdd    cterm=NONE ctermbg=2 ctermfg=white
+hi DiffChange cterm=NONE ctermbg=3 ctermfg=white
+hi DiffDelete cterm=NONE ctermbg=1 ctermfg=white
+hi DiffText   cterm=NONE ctermbg=3 ctermfg=white
