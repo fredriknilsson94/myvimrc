@@ -1,48 +1,60 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
 
 let mapleader = "\<Space>"
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" " if behind proxy
+" " BEGIN
+" let $GIT_SSL_NO_VERIFY = 'true'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" " Vim Plug plugin manager
+" if empty(glob('~/.vim/autoload/plug.vim'))
+"   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs --insecure
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" endif
+" " END
+
+" Vim Plug plugin manager normal use
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
 
 " Vim diff and merge tool improvement
-Plugin 'whiteinge/diffconflicts'
+Plug 'whiteinge/diffconflicts'
 " NERDtree
-Plugin 'scrooloose/nerdtree'
-" YouCompleteMe auto-completion
-Plugin 'valloric/youcompleteme'
+Plug 'scrooloose/nerdtree'
 " Sublime monokai color theme
-Plugin 'erichdongubler/vim-sublime-monokai'
+Plug 'erichdongubler/vim-sublime-monokai'
 " Vim commentary
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 " Jenkinsfile syntax stuff
-Plugin 'martinda/jenkinsfile-vim-syntax'
+Plug 'martinda/jenkinsfile-vim-syntax'
+" YouCompleteMe auto-completion
+Plug 'valloric/youcompleteme'
+" Git vim wrapper
+Plug 'tpope/vim-fugitive'
+" Lean & mean status/tabline for vim that's light as air.
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
+call plug#end()
 " Put your non-Plugin stuff after this line
 
 set showmode
 set autoread
+
+set hlsearch
+nnoremap <Leader>n :set hlsearch! hlsearch?<CR>
+
+set nowrap
+
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swp//
+set undodir=~/.vim/undo//
 
 syntax on
 colorscheme sublimemonokai
@@ -61,9 +73,6 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-" turn swap files OFF
-set noswapfile
-
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -73,20 +82,17 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" NERDtree settings
+nnoremap <Leader>t :NERDTreeToggle<CR>
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+" YouCompleteMe settings
+nnoremap <Leader>gd :YcmCompleter GoToDefinition<CR>
+nnoremap <Leader>gi :YcmCompleter GoToInclude<CR>
+
 set splitbelow
 set splitright
-
-function! GetBranchName(_) abort
-  let b:branch_name = systemlist("git rev-parse --abbrev-ref HEAD 2> /dev/null || echo ''")[0]
-endfunction
-call timer_start(1000, function('GetBranchName'), {'repeat': -1})
-autocmd BufEnter,BufWritePost * call GetBranchName("")
-
-set laststatus=2
-set statusline=%f " tail of the filename
-set statusline+=\ c:%c " column number
-set statusline+=%= " switching to right side
-set statusline+=%(%{b:branch_name}%)
 
 " vim diff colors
 hi DiffAdd    cterm=NONE ctermbg=2 ctermfg=white
