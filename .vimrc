@@ -40,6 +40,7 @@ Plug 'tpope/vim-fugitive'
 " Lean & mean status/tabline for vim that's light as air.
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'powerline/powerline'
 
 call plug#end()
 " Put your non-Plugin stuff after this line
@@ -90,6 +91,11 @@ let NERDTreeDirArrows = 1
 " YouCompleteMe settings
 nnoremap <Leader>gd :YcmCompleter GoToDefinition<CR>
 nnoremap <Leader>gi :YcmCompleter GoToInclude<CR>
+
+" Vim airline settings
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'wombat'
 
 set splitbelow
 set splitright
